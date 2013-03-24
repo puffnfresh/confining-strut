@@ -1,0 +1,28 @@
+{
+  "name": "confining-strut",
+  "version": "0.0.0",
+  "description": "Assigns an engine independent toString for function declarations",
+  "main": "index.js",
+  "bin": {
+    "confining-strut": "confining-strut"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/grunt test"
+  },
+  "repository": "https://github.com/pufuwozu/confining-strut.git",
+  "keywords": [
+    "toString"
+  ],
+  "author": "Brian McKenna",
+  "license": "MIT",
+  "dependencies": {
+    "esprima": "~1.0.2",
+    "estraverse": "0.0.4",
+    "escodegen": "0.0.19"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.6",
+    "grunt-contrib-nodeunit": "~0.1.2"
+  }
+}
