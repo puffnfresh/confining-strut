@@ -46,63 +46,50 @@
 
 var escodegen = require('escodegen');
 
-function nodeContent(content, node) {
-    var lines = content.split('\n').slice(node.loc.start.line - 1, node.loc.end.line);
-    lines[0] = lines[0].substr(node.loc.start.column);
-    lines[lines.length - 1] = lines[lines.length - 1].substr(0, node.loc.end.column);
-
-    return lines.join('\n');
-}
-exports.nodeContent = nodeContent;
-
 function addToStringForFunctionDeclarations(content, ast) {
     require('estraverse').traverse(ast, {
         enter: function(node, parent) {
             var code, i;
             if(node.type != 'FunctionDeclaration') return;
 
-            code = nodeContent(content, node);
-            for(i = 0; i < parent.body.length; i++) {
-                if(parent.body[i] != node) continue;
-                parent.body.splice(i + 1, 0, {
-                    type: 'ExpressionStatement',
-                    expression: {
-                        type: 'AssignmentExpression',
-                        operator: '=',
-                        left: {
-                            type: 'MemberExpression',
-                            object: node.id,
-                            property: {
-                                type: 'identifier',
-                                name: 'toString'
-                            }
-                        },
-                        right: {
-                            type: 'FunctionExpression',
-                            params: [],
-                            body: {
-                                type: 'BlockStatement',
-                                body: [{
-                                    type: 'ReturnStatement',
-                                    argument: {
-                                        type: 'Literal',
-                                        value: code
-                                    }
-                                }]
-                            }
+            code = content.slice(node.range[0], node.range[1]);
+            i = parent.body.indexOf(node);
+            parent.body.splice(i + 1, 0, {
+                type: 'ExpressionStatement',
+                expression: {
+                    type: 'AssignmentExpression',
+                    operator: '=',
+                    left: {
+                        type: 'MemberExpression',
+                        object: node.id,
+                        property: {
+                            type: 'identifier',
+                            name: 'toString'
+                        }
+                    },
+                    right: {
+                        type: 'FunctionExpression',
+                        params: [],
+                        body: {
+                            type: 'BlockStatement',
+                            body: [{
+                                type: 'ReturnStatement',
+                                argument: {
+                                    type: 'Literal',
+                                    value: code
+                                }
+                            }]
                         }
                     }
-                });
-                return;
-            }
-            if(parent && parent.body) parent.body = [];
+                }
+            });
         }
     });
 }
 exports.addToStringForFunctionDeclarations = addToStringForFunctionDeclarations;
 
 function addToStrings(content) {
-    var ast = require('esprima').parse(content, {loc: true});
+    var ast = require('esprima').parse(content, {range: true});
     addToStringForFunctionDeclarations(content, ast);
     return escodegen.generate(ast);
 }

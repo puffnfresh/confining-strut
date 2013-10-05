@@ -17,12 +17,14 @@
   "license": "MIT",
   "dependencies": {
     "esprima": "~1.0.2",
-    "estraverse": "0.0.4",
-    "escodegen": "0.0.19"
+    "estraverse": "0.0.4"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.6",
     "grunt-contrib-nodeunit": "~0.1.2"
+  },
+  "optionalDependencies": {
+    "escodegen": "0.0.19"
   }
 }
