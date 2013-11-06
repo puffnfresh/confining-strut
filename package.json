@@ -16,7 +16,6 @@
   "author": "Brian McKenna",
   "license": "MIT",
   "dependencies": {
-    "esprima": "~1.0.2",
     "estraverse": "0.0.4"
   },
   "devDependencies": {
@@ -25,6 +24,7 @@
     "grunt-contrib-nodeunit": "~0.1.2"
   },
   "optionalDependencies": {
+    "esprima": "~1.0.2",
     "escodegen": "0.0.19"
   }
 }

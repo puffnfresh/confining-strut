@@ -44,8 +44,6 @@
     JavaScript output.
 **/
 
-var escodegen = require('escodegen');
-
 function addToStringForFunctionDeclarations(content, ast) {
     require('estraverse').traverse(ast, {
         enter: function(node, parent) {
@@ -91,7 +89,7 @@ exports.addToStringForFunctionDeclarations = addToStringForFunctionDeclarations;
 function addToStrings(content) {
     var ast = require('esprima').parse(content, {range: true});
     addToStringForFunctionDeclarations(content, ast);
-    return escodegen.generate(ast);
+    return require('escodegen').generate(ast);
 }
 exports.addToStrings = addToStrings;
 
